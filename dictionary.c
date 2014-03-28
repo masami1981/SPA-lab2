@@ -19,7 +19,6 @@ Dictionary create()
 // rijeci se dodaju u abecednom redu
 void add(Dictionary dict, char *str)
 {
-    int i;//, wl;
     Dictionary wp, tmp;
 
     wp =(Dictionary) malloc(sizeof(Word));
