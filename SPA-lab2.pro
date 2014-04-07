@@ -7,7 +7,8 @@ SOURCES += main.c \
     dictionary.c
 
 OTHER_FILES += \
-    liar.txt
+    liar.txt \
+    README.md
 
 HEADERS += \
     dictionary.h
