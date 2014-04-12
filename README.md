@@ -1,10 +1,10 @@
-1. Laboratorijska vježba
+- 2. Laboratorijska vježba
 
 Vezane liste.
 
 Implementirati funkcije opisane u .h datoteci.
 
-3. Laboratorijska vježba
+- 3. Laboratorijska vježba
 
 Dictionary - nastavak
 
