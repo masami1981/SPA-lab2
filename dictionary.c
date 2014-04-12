@@ -10,7 +10,7 @@ Dictionary create()
     Dictionary dict;
     dict = (Dictionary) malloc(sizeof(Word));
     dict->count = 0;
-    dict->word = strdup("");
+    dict->word = NULL;
     dict->next = NULL;
     return dict;
 }
@@ -24,26 +24,27 @@ void add(Dictionary dict, char *str)
     wp =(Dictionary) malloc(sizeof(Word));
     wp->word = strdup(str);
     wp->next = NULL;
+    wp->count =1;
     tmp = dict;
     while(1)
     {
         if(tmp->next == NULL)
         {
             tmp->next = wp;
-            (tmp->next->count)++;
-            break;
+            return;
         }
         else if(strcmp(tmp->next->word, str) == 0)
         {
             (tmp->next->count)++;
-            break;
+            free(wp->word);
+            free(wp);
+            return;
         }
         else if(strcmp(tmp->next->word, str) > 0)
         {
             wp->next = tmp->next;
             tmp->next = wp;
-            (tmp->next->count)++;
-            break;
+            return;
         }
         else
         {
@@ -57,24 +58,74 @@ void add(Dictionary dict, char *str)
 void print(Dictionary dict)
 {
     Dictionary tmp;
-    for( tmp=dict ; tmp != NULL ; tmp = tmp->next)
-        printf("%dx %s\n", tmp->count, tmp->word);
+    for( tmp=dict ; tmp->next != NULL ; tmp = tmp->next)
+        printf("%dx %s\n", tmp->next->count, tmp->next->word);
 }
 
 // briše cijeli rjecnik
 void destroy(Dictionary dict)
 {
-    Dictionary tmp;
+    Dictionary tmp, tmp2;
     tmp=dict;
-    if(tmp == NULL)
+    while(1)
     {
-        free(tmp);
+        if (tmp->next->next != NULL)
+        {
+            tmp2 = tmp->next->next;
+            free(tmp->next->word);
+            free(tmp->next);
+            tmp->next=tmp2;
+        }
+        else
+        {
+            free(tmp->next->word);
+            free(tmp->next);
+            tmp->next=NULL;
+            free (dict);
+            dict = NULL;
+            break;
+        }
     }
-    else
-    {
-        tmp = tmp->next;
-        destroy(tmp);
-    }
+}
 
+Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w))
+{
+    Dictionary tmp, tmp2;
+    tmp = indict;
+        while(1)
+        {
+            if (tmp->next != NULL && (*filter)(tmp->next))
+            {
+                tmp = tmp->next;
+                continue;
+            }
+            else if (tmp->next != NULL)
+            {
+
+                if (tmp->next->next != NULL)
+                {
+                    tmp2 = tmp->next->next;
+                    free(tmp->next->word);
+                    free(tmp->next);
+                    tmp->next=tmp2;
+                    continue;
+                }
+                else
+                {
+                    free(tmp->next);
+                    tmp->next = NULL;
+                    break;
+                }
+            }
+            else break;
+        }
+        return indict;
+}
+
+int filter(Word *w)
+{
+    if((strlen(w->word) > 3) && (w->count>4) && (w->count<11))
+        return 1;
+    else return 0;
 }
 
