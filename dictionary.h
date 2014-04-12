@@ -22,4 +22,8 @@ void print(Dictionary dict);
 // briše cijeli rjeènik
 void destroy(Dictionary dict);
 
+Dictionary filterDictionary(Dictionary indict, int (*filter)(Word *w));
+
+int filter(Word *w);
+
 #endif

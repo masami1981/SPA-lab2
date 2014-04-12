@@ -46,7 +46,8 @@ int main()
 	fclose(fd);
 
     print(dict);
-
+    filterDictionary(dict, &filter);
+    print(dict);
     destroy(dict);
     return 0;
 }
